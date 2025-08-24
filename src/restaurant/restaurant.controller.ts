@@ -1,5 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
+import { CreateRestaurantDto } from './dtos/restaurant.dto';
+import { Restaurant } from './schema/restaurant.schema';
 
 //http://localhost:4000/restaurants
 @Controller("restaurants")
@@ -8,27 +10,29 @@ export class RestaurantController {
     constructor(private restaurantService: RestaurantService){}
 
     @Post()
-    createRestaurant(@Body() body:any){
+    createRestaurant(@Body() body:CreateRestaurantDto): Promise<Restaurant>{
         return this.restaurantService.createRestaurant(body);
     }
 
     @Get()
-    getAllrestaurants(){
+    getAllrestaurants(): Promise<Restaurant[]>{
         return this.restaurantService.getAllRestaurants();
     }
 
-    @Get(':id/:name/:m')
-    getRestaurantById(@Param() params: {id:string, name:string, m:string}){
-        return params;
+    @Get(':id')
+    getRestaurantById(@Param("id") id:string): Promise<Restaurant>{
+        return this.restaurantService.getRestaurantById(id);
     }
 
     @Delete()
-    deleteRestaurant(@Query('id') id:string){
-        return `Delete ${id}`;
+    async deleteRestaurant(@Query('id') id:string){
+        await this.restaurantService.getRestaurantById(id);
+        return this.restaurantService.deleteRestaurant(id);
     }
 
     @Put(':id')
-    updaterestaurant(@Param() id:string){
-        return `Update ${id}`
+    async updateRestaurant(@Param('id') id:string, @Body() body:any ){
+        await this.restaurantService.getRestaurantById(id);
+        return this.restaurantService.updateRestaurant(id, body);
     }
 }
