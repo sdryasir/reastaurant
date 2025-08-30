@@ -46,7 +46,7 @@ export class LocationDto {
   lng: number;
 }
 
-export class CreateRestaurantDto {
+export class UpdateRestaurantDto {
 
   @IsString()
   @ApiProperty({example:'John Doe'})
@@ -54,38 +54,38 @@ export class CreateRestaurantDto {
 
   @IsArray()
   @ApiProperty({example:['Pakistani', 'Indian']})
-  cuisine: string[];
+  cuisine?: string[];
 
   @IsNumber()
   @ApiProperty({example:4})
-  rating: number;
+  rating?: number;
 
   @IsNumber()
   @ApiProperty({example:10})
-  reviewsCount: number;
+  reviewsCount?: number;
 
   @IsString()
   @ApiProperty({example:'$$'})
-  priceRange: string;
+  priceRange?: string;
 
 
   @ValidateNested()
   @Type(()=>ContactDto)
   @ApiProperty({type: ()=>ContactDto})
-  contact: ContactDto;
+  contact?: ContactDto;
 
   @ValidateNested()
   @Type(()=>AddressDto)
   @ApiProperty({type: ()=>AddressDto})
-  address: AddressDto;
+  address?: AddressDto;
 
   @ValidateNested()
   @Type(()=>LocationDto)
   @ApiProperty({type: ()=>LocationDto})
-  location: LocationDto;
+  location?: LocationDto;
 
   @IsBoolean({message:'Please provide  a value that is true /false'})
   @ApiProperty({example:true})
-  isOpen: boolean;
+  isOpen?: boolean;
 
 }
